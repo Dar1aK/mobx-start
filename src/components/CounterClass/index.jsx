@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { runInAction } from 'mobx';
+import { runInAction, autorun } from 'mobx';
 
 import { CounterStoreClass } from '../../stores';
 
 const store = new CounterStoreClass();
+
+autorun(() => console.log(store.color));
 
 export const CounterClass = observer(
   class extends Component {
