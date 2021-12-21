@@ -1,33 +1,25 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { observer } from 'mobx-react';
-import { action, makeObservable, observable } from 'mobx'; 
+import { runInAction } from 'mobx';
 
-export const CounterClass = observer(class extends Component {
-    count = 0;
+import { CounterStoreClass } from '../../stores';
 
-    constructor(props) {
-        super(props);
-        makeObservable(this, {
-            count: observable,
-            dec: action,
-            inc: action.bound,
-        })
-        this.count = this.props.initialCount ?? 0;
-    }
+const store = new CounterStoreClass();
 
-    dec = () => this.count--;
-
-    inc() {
-        this.count++;
+export const CounterClass = observer(
+  class extends Component {
+    componentDidMount() {
+      runInAction(() => (store.count = this.props.initialCount ?? 0));
     }
 
     render() {
-        return (
-            <div>
-                <button onClick={this.dec}>-</button>
-                <span>{this.count}</span>
-                <button onClick={this.inc}>+</button>
-            </div>
-        )
+      return (
+        <div>
+          <button onClick={store.dec}>-</button>
+          <span style={{ color: store.color }}>{store.count}</span>
+          <button onClick={store.inc}>+</button>
+        </div>
+      );
     }
-})
+  }
+);

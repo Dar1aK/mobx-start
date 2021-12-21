@@ -1,5 +1,5 @@
-import { CounterClass } from '../src/components/CounterClass'
-import CounterFC from '../src/components/CounterFC'
+import { CounterClass } from '../src/components/CounterClass';
+import CounterFC from '../src/components/CounterFC';
 
 import './App.css';
 

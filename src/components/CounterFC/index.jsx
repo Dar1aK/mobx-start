@@ -1,23 +1,23 @@
-import React from 'react'
-import { observer, useLocalObservable } from 'mobx-react'
+import React, { useEffect } from 'react';
+import { observer } from 'mobx-react';
+import { runInAction } from 'mobx';
 
-const CounterFC = observer(({initialCount}) => {
-    const store = useLocalObservable(() => {
-        return {
-            count: initialCount ?? 0,
-            dec() {
-                this.count--
-            },
-            inc() {
-                this.count++
-            }
-        }
-    })
-    return <div>
-        <button onClick={store.dec}>-</button>
-        <span>{store.count}</span>
-        <button onClick={store.inc}>+</button>
+import { counterStoreFC } from '../../stores';
+
+const store = counterStoreFC();
+
+const CounterFC = observer((props) => {
+  useEffect(() => {
+    runInAction(() => (store.count = props.initialCount ?? 0));
+  }, [props.initialCount]);
+
+  return (
+    <div>
+      <button onClick={store.dec}>-</button>
+      <span style={{ color: store.color }}>{store.count}</span>
+      <button onClick={store.inc}>+</button>
     </div>
-})
+  );
+});
 
 export default CounterFC;
